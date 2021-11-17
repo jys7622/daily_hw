@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>지도 생성하기</title>
+</head>
+<body>
+<!-- 지도를 표시할 div 입니다 -->
+<div id="map" style="width: 100vw; height: 50vh"></div>
+<div id="result"></div>
+
+<style>
+    .menuDiv {
+        display: flex;
+        margin: 50px;
+        justify-content: space-between;
+    }
+
+    .menuDiv > a {
+        /* a태그 밑줄 없애기 */
+        text-decoration: none;
+        background-color: blanchedalmond;
+        color: black;
+        font-size: large;
+        border-radius: 0.3em;
+        padding: 10px;
+    }
+
+</style>
+
+<div class="menuDiv">
+    <a href="전체">전체</a>
+    <a href="카레">카레</a>
+    <a href="일식">일식</a>
+
+
+</div>
+
+<script
+        type="text/javascript"
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f5cfff2c0013e450ceba28cd516286e9"
+></script>
+<script>
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+        mapOption = {
+            center: new kakao.maps.LatLng(37.6278196, 126.7064952), // 지도의 중심좌표
+            level: 5, // 지도의 확대 레벨
+        };
+
+    // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
+    var map = new kakao.maps.Map(mapContainer, mapOption);
+</script>
+<script>
+    kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
+        var latlng = mouseEvent.latLng; // 클릭한 위도, 경도 정보를 가져옵니다
+        var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
+        message += '경도는 ' + latlng.getLng() + ' 입니다';
+        var resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = message;
+    });
+
+    const markerArr = []; //기존 마커 배열
+
+    function showMarkers(stores) {
+        //기존 마커들 지운다.
+        for (let i = 0; i < markerArr.length; i++) {
+            markerArr[i].setMap(null);
+        }
+
+        //showMarkers 라는 함수는 배열(stores)을 주면 마커들을 찍어주는 기능
+        for (let i = 0; i < stores.length; i++) {
+            const store = stores[i];
+            const latLng = new kakao.maps.LatLng(store.lat, store.lng);
+            const marker = new kakao.maps.Marker({
+                map: map,
+                position: latLng,
+                title: store.name,
+            });
+            markerArr.push(marker);
+        } // end for
+    }
+    //식당위치 배열 생성
+    const arr = [
+        { name: '타지팰리스', lat: 37.544507, lng: 126.991511, menu: '카레' },
+        { name: '죠티인도', lat: 37.555044, lng: 126.937929, menu: '카레' },
+        { name: '예티인도', lat: 37.565563, lng: 126.923378, menu: '카레' },
+        { name: '지로우라멘', lat: 37.5536583, lng: 126.9229494, menu: '일식'},
+        { name: '오복수산', lat: 37.5376784, lng: 127.0018967, menu: '일식' },
+        { name: '스시코테이', lat: 37.5276863, lng: 127.031121, menu: '일식' },
+        { name: '호별관', lat: 37.5095451, lng: 127.03487724, menu: '일식' },
+    ];
+    document.querySelector('.menuDiv').addEventListener('click',(e) => {
+        e.preventDefault();
+        e.stopImmediatePropagation(); //이벤트 전파 금지
+
+
+        const target = e.target;
+        console.log(target);
+        if(target.tagName !== 'A'){
+            return
+        }
+        console.log("A태그 클릭")
+        const keyword = target.getAttribute("href");
+
+        if(keyword !== '전체') {
+            const result = arr.filter(s => s.menu === keyword)
+            showMarkers(result)
+        }else {
+            showMarkers(arr)
+        }
+
+    },false);
+</script>
+</body>
+</html>
