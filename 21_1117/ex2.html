@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
 <body>
-<button id="btn">Click</button>
+
+<button id="btn">CLICK</button>
+
 <script>
-    document.querySelector('#btn').addEventListener(
-        'click',
-        function () {
-            console.log('click');
-            fetch("http://localhost:5555/webstrom11/store1.json")
-        },false
-    );
+
+    document.querySelector("#btn").addEventListener("click",function(){
+
+        console.log("click")
+
+        fetch("http://192.168.0.193:5555/w17-master/store.json")
+
+    }, false)
+
 </script>
+
 </body>
 </html>
