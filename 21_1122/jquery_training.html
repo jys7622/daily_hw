@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+</head>
+<body>
+    <style>
+        .node {
+            width: 200px;
+            /* height: 50px; */
+           
+            padding-left: 30px;
+            text-decoration: underline;
+            background-color: chartreuse;
+            
+        }
+        .btn {
+            margin-left: 30px;
+        }
+    </style>
+<div class="container">
+    
+    <div class="node">
+        <b>ROOT</b>
+    </div>
+
+</div>
+
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+ <script>
+ $(document).ready(function(){
+    
+    let count = 0;
+    
+    
+
+ $(".container").on("click", ".node",function(e){
+     e.preventDefault()
+         // 컨테이너 클릭 이벤트 발생
+    const targetNode = $(e.target)  //타겟 = 함수
+    console.log("-------------");
+    e.stopPropagation()
+
+    targetNode.append(`<div class="node"><b>${count++}<button class = "btn">삭제</button></b></div>`) // 루트 버튼 누르면 카운트 추가
+     });
+$(".container").on("click", ".node button", function(e){
+    e.stopPropagation()
+    // console.log(e.target);
+
+    const target =  $(e.target.closest(".node"))
+    $(e.target.closest(".node"));
+
+    const children = (target.find(".node"));
+    
+    
+    if(children.length > 0) {
+        alert("삭제불가")
+        return
+    }
+
+    target.remove()
+    
+})
+
+ })
+ 
+
+     
+ </script>
+ 
+</body>
+</html>
